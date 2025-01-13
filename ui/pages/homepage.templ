@@ -1,0 +1,26 @@
+package pages
+
+import "froi/go-templ-poc/ui/components"
+
+templ Homepage(title string, username string, userLoggedIn bool) {
+	@components.Base(title) {
+		@components.TopNav(true)
+		<div class="w-screen h-fit pt-24 pb-32 bg-gradient-to-r from-slate-200 to-gray-200 flex flex-col">
+			<div class="mt-[5svh] ml-[5svh] w-fit">
+				<h1 class="text-4xl sm:text-4xl md:text-6xl lg:text-8xl text-stone-800 drop-shadow-md">
+					{ title }
+				</h1>
+				if (userLoggedIn) {
+					<p class="text-xl sm:text-xl md:text-2xl mt-4 text-stone-800">
+						User { username } is logged in
+					</p>
+				} else {
+					<p class="text-xl sm:text-xl md:text-2xl mt-4 text-stone-800">
+						Please <a class="font-bold text-xl text-blue-500 cursor-pointer" href="/login">Login</a>
+					</p>
+				}
+			</div>
+		</div>
+		@components.Footer()
+	}
+}

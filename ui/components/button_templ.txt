@@ -1,0 +1,4 @@
+<button class=\"\n\t\t    disabled:opacity-75\n\t\t    disabled:bg-slate-500\n            disabled:cursor-not-allowed\n            bg-blue-600\n            hover:bg-blue-700\n            text-white\n            font-light\n            py-2 px-4\n            rounded\n            focus:outline-none\n            focus:shadow-outline\" type=\"submit\"
+ disabled
+>
+</button>

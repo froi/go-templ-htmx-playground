@@ -1,0 +1,2 @@
+<p class=\"text-center text-slate-300 text-s\">&copy;2024 
+. All rights reserved.</p>
