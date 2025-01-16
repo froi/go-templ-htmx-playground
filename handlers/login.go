@@ -8,10 +8,11 @@ import (
 	"froi/go-templ-poc/types"
 	"froi/go-templ-poc/ui/pages"
 
+	"github.com/alexedwards/scs/v2"
 	"golang.org/x/crypto/bcrypt"
 )
 
-func PostLoginHandler(db *sql.DB, title string) func(w http.ResponseWriter, r *http.Request) {
+func PostLoginHandler(db *sql.DB, sessionManager *scs.SessionManager, title string) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		err := r.ParseForm()
 		if err != nil {
@@ -29,7 +30,7 @@ func PostLoginHandler(db *sql.DB, title string) func(w http.ResponseWriter, r *h
 			slog.Info("Email or password can't be empty")
 
 			formValues.ShowFailedLoginFlag = true
-			pages.LoginPage(title, formValues).Render(r.Context(), w)
+			pages.LoginPage(title, formValues, false).Render(r.Context(), w)
 			return
 		}
 		user := types.User{}
@@ -37,7 +38,7 @@ func PostLoginHandler(db *sql.DB, title string) func(w http.ResponseWriter, r *h
 		if err != nil {
 			slog.Error(err.Error())
 			formValues.ShowFailedLoginFlag = true
-			pages.LoginPage(title, formValues).Render(r.Context(), w)
+			pages.LoginPage(title, formValues, false).Render(r.Context(), w)
 			return
 		}
 		slog.Debug("Found user", "user", user)
@@ -45,10 +46,20 @@ func PostLoginHandler(db *sql.DB, title string) func(w http.ResponseWriter, r *h
 		if err != nil {
 			slog.Error(err.Error())
 			formValues.ShowFailedLoginFlag = true
-			pages.LoginPage(title, formValues).Render(r.Context(), w)
+			pages.LoginPage(title, formValues, false).Render(r.Context(), w)
 			return
 		}
 		slog.Info("User authenticated")
-		pages.Homepage(title, user.Email, true).Render(r.Context(), w)
+		err = sessionManager.RenewToken(r.Context())
+		if err != nil {
+			slog.Error(err.Error())
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		sessionManager.Put(r.Context(), "user", user.Email)
+		// pages.Homepage(title, user.Email, true).Render(r.Context(), w)
+		w.Header().Set("HX-Redirect", "/")
+		w.Header().Set("HX-Replace-Url", "/")
+		w.WriteHeader(http.StatusNoContent)
 	}
 }

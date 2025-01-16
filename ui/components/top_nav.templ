@@ -1,11 +1,15 @@
 package components
 
-templ TopNav(showHomeItem bool) {
+templ TopNav(userLoggedIn bool) {
 	<div class="w-screen h-fit px-4 py-4 flex justify-between bg-blue-600">
 		<!-- <img src="/static/logo.png" alt="Logo" class="h-8 w-8"/> -->
 		<a class="font-bold text-xl text-stone-100 cursor-pointer" href="/">Hermes</a>
 		<div class="flex gap-4">
-			<a class="font-bold text-xl text-stone-100 cursor-pointer" href="/login">Login</a>
+		    if (userLoggedIn) {
+				<a class="font-bold text-xl text-stone-100 cursor-pointer" hx-post="/logout" hx-swap="outerHTML" hx-target="body">Logout</a>
+			}else {
+			    <a class="font-bold text-xl text-stone-100 cursor-pointer" href="/login">Login</a>
+			}
 		</div>
 	</div>
 }

@@ -43,7 +43,7 @@ func Homepage(title string, username string, userLoggedIn bool) templ.Component 
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = components.TopNav(true).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = components.TopNav(userLoggedIn).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

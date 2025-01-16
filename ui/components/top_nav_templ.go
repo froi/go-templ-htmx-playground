@@ -8,7 +8,7 @@ package components
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-func TopNav(showHomeItem bool) templ.Component {
+func TopNav(userLoggedIn bool) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -29,7 +29,22 @@ func TopNav(showHomeItem bool) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"w-screen h-fit px-4 py-4 flex justify-between bg-blue-600\"><!-- <img src=\"/static/logo.png\" alt=\"Logo\" class=\"h-8 w-8\"/> --><a class=\"font-bold text-xl text-stone-100 cursor-pointer\" href=\"/\">Hermes</a><div class=\"flex gap-4\"><a class=\"font-bold text-xl text-stone-100 cursor-pointer\" href=\"/login\">Login</a></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"w-screen h-fit px-4 py-4 flex justify-between bg-blue-600\"><!-- <img src=\"/static/logo.png\" alt=\"Logo\" class=\"h-8 w-8\"/> --><a class=\"font-bold text-xl text-stone-100 cursor-pointer\" href=\"/\">Hermes</a><div class=\"flex gap-4\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if userLoggedIn {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<a class=\"font-bold text-xl text-stone-100 cursor-pointer\" hx-post=\"/logout\" hx-swap=\"outerHTML\" hx-target=\"body\">Logout</a>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		} else {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<a class=\"font-bold text-xl text-stone-100 cursor-pointer\" href=\"/login\">Login</a>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
